@@ -8,9 +8,13 @@ const socket = io.connect(host);
 
 let currRoom = null;
 
+// STEP 3: LISTEN FOR NEW GAME EVENT
 socket.on('new-game', startGame);
-socket.on('number', getNumber);
 
+// STEP 7 LISTEN FOR THE WINNER EVENT!
+socket.on('winner', handleWinner);
+
+// STEP 3 HANDLER
 function startGame(payload) {
   currRoom = payload.room;
   console.log(payload.message);
@@ -22,13 +26,19 @@ function startGame(payload) {
       name: 'number',
       message: 'Guess a number: '}]
   inquirer.prompt(questions).then(answers => {
+    // STEP 4 SEND BACK TO THE GAME
     socket.emit('guess', { answers: answers, room: currRoom });
   });
 }
 
-function getNumber() {
-  readline.question('Guess a number!', number => {
-  socket.emit('guess', { name: playerName, number: number, room: currRoom })
-  })
-  readline.close();
+// STEP 7 HANDLER
+function handleWinner(payload) {
+  console.log(payload.message);
 }
+
+// function getNumber() {
+//   readline.question('Guess a number!', number => {
+//   socket.emit('guess', { name: playerName, number: number, room: currRoom })
+//   })
+//   readline.close();
+// }
