@@ -4,6 +4,7 @@
   "description": "Socket.io server controlling event driven number guessing game",
   "main": "game.js",
   "scripts": {
+    "start": "nodemon game.js",
     "test": "jest --coverage"
   },
   "repository": {
