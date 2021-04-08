@@ -5,7 +5,7 @@ The number game server starts a name when two players enter the same room. The g
 
 **Client Apps**
 
-**[Players]()**
+**[Players](./player)**
 
 ## Author: Anne Thorsteinson & Clement Buchanen
 
