@@ -1,0 +1,16 @@
+{
+  "name": "fake-player",
+  "version": "1.0.0",
+  "description": "fake player to test game functionality",
+  "main": "player.js",
+  "scripts": {
+    "start": "nodemon player.js",
+    "test": "jest --coverage"
+  },
+  "author": "Anne Thorsteinson",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "socket.io-client": "^2.4.0"
+  }
+}
