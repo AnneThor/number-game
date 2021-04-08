@@ -12,7 +12,6 @@ let roomNo = 1;
 // need some system to store guesses
 let roomsDB = {};
 
-
 game.on('connection', socket => {
 
   // when player join they are assigned to a room
@@ -21,6 +20,7 @@ game.on('connection', socket => {
       io.nsps['/number-game'].adapter.rooms[roomNo].length > 1) {
         roomNo++
       }
+
   socket.join(`${roomNo}`, handleJoinRoom(roomNo));
 
   // checking room number is incrementing and stating how many players in the room
@@ -34,13 +34,12 @@ game.on('connection', socket => {
     console.log(`The random no is ${roomsDB[roomNo].random}`);
     let payload = {
       room: roomNo,
-      message: `Welcome to room ${roomNo} \n NEW GAME! \n Guess the Number`
+      message: `Welcome to room ${roomNo} \n Let the Game Begin!`
     }
     game.to(roomNo).emit('new-game', payload);
   }
 
   socket.on('guess', handleGuess);
-
 
 })
 
@@ -51,9 +50,24 @@ function handleJoinRoom(roomNo) {
 }
 
 function handleGuess(payload) {
-    // guess: number, room: currRoom, name: name
-    // save this into the room database area
-    if (!roomsDB[payload.room].guess) {
-      roomsDB[payload.room].guess = payload;
-    }
+  // name, number
+  // save this into the room database area
+  let room = payload.room;
+  if (!roomsDB[room].guess) {
+    roomsDB[room].guess = [];
+    roomsDB[room].guess.push(payload.answers);
+  } else {
+    roomsDB[room].guess.push(payload.answers);
+    handleWinner(room, roomsDB[room].guess);
+  }
+}
+
+function handleWinner(room, answers) {
+  let number = roomsDB[room].random;
+  let player1 = answers[0];
+  let player2 = answers[1];
+  let winner = Math.abs(player1.number - number) > Math.abs(player2.number - number) ? player2.name : player1.name;
+  console.log(`The winner is ${winner}`);
+  let payload = roomsDB[room].guess;
+  game.to(room).emit(payload);
 }
