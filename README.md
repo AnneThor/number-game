@@ -42,4 +42,4 @@ The app runs from the ```/number-game``` namespace
 
 ## UML Diagram
 
-![UML Diagram](./assets/number-game.png)
+![UML Diagram](./assets/guess a number.png)
